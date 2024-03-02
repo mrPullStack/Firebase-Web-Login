@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Web Login</title>
+    <title>Firebase Authentication</title>
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
@@ -25,7 +25,27 @@
     </div>
 
 
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyCc4wujPDzpH59brlpZBR46NwwtjPvZgQs",
+          authDomain: "authentication-app-38a8a.firebaseapp.com",
+          databaseURL: "https://authentication-app-38a8a-default-rtdb.firebaseio.com",
+          projectId: "authentication-app-38a8a",
+          storageBucket: "authentication-app-38a8a.appspot.com",
+          messagingSenderId: "909677297907",
+          appId: "1:909677297907:web:b0cc8f13436f83a5dff786"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+      </script>
 
-    <script src="scripts/scripts.js"></script>
+      
 </body>
 </html>
