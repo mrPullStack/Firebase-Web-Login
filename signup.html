@@ -47,26 +47,36 @@
         const database = getDatabase(app);
         const auth = getAuth();
 
-        signup-submit.addEventListener('click',(e) => {
-            var email = document.getElementById('').value;
-            var password = document.getElementById('').value;
+                signup-submit.addEventListener('click',(e) => {
+
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
             var username = document.getElementById('username').value;
 
             createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                //Signed In
+                // Signed In
                 const user = userCredential.user;
+                alert('User Created!');
+
+                // Store user's full name and username in the database
+                set(ref(database, 'users/' + user.uid), {
+                    fullname: document.getElementById('fullname').value,
+                    username: document.getElementById('username').value
+                });
+
                 // ...
             })
+
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                // ...
-            });
+
+                alert(errorMessage);
+            })
 
         });
-
-      </script>
+    </script>
 
 </body>
 </html>
