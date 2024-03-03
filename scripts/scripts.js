@@ -4,6 +4,8 @@ document.getElementById('sign-in-form').addEventListener('submit', (event) => {
     
 });
 
+let signinform = document.getElementById('sign-in-submit').addEventListener('click', SignIn);
+
 function SignUp(e) {
     e.preventDefault();
     const email = signupemail.value;

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Sign Out</h1>
+        <form id="sign-out-form">
+            <button type="button" id="sign-out-button">Sign out</button>
+        </form>
+    </div>
+
+
+    <script>
+        let UserCreds = JSON.parse(sessionStorage.getItem("user-creds"));
+        let UserInfo = JSON.parse(sessionStorage.getItem("user-info"));
+
+        let Signout = () => {
+            sessionStorage.removeItem("user-creds");
+            sessionStorage.removeItem("user-info");
+            window.location.href = 'signin.html'
+        }
+
+        let CheckCred = () => {
+            if(!sessionStorage.getItem("user-creds"));
+            window.location.href = 'signin.html'
+        }
+
+        window.addEventListener('load', CheckCred);
+        // sign-out-button.addEventListener('click', Signout);
+        document.getElementById('sign-out-button').addEventListener('click', Signout);
+
+
+
+    </script>
+</body>
+</html>
