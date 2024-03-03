@@ -36,4 +36,4 @@ function SignUp(e) {
     } else {
       alert("Please enter a valid email and password.");
     }
-}
+  }
