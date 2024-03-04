@@ -10,9 +10,9 @@
     <div class="container">
         <h1>Sign in</h1>
         <form id="sign-in-form">
-            <label for="email">Email</label>
+            <label for="sign-in-email">Email</label>
             <input type="text" id="sign-in-email" name="email" required>
-            <label for="password">Password</label>
+            <label for="sign-in-password">Password</label>
             <input type="password" id="sign-in-password" name="password" required>
             <button type="submit" id="sign-in-submit">Sign in</button>
         </form>
@@ -62,7 +62,8 @@
                             // fullname: snapshot.val().fullname
                         }))
                         sessionStorage.setItem("user-creds", JSON.stringify(credentials.user));
-                        window.location.href = 'index.html';
+                        // window.location.href = 'index.html';
+                        window.location.assign('index.html');
                     }else{
                         console.log("User not found");
                         alert("This account does not exist");
