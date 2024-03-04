@@ -11,13 +11,13 @@
         <h1>Create your account</h1>
         <form id="sign-up-form">
             <label for="fullname">Full name</label>
-            <input type="text" id="fullname" name="fullname" required>
+            <input type="text" id="fullname" name="fullname" required autocomplete="name">
             <label for="sign-up-email">Email</label>
-            <input type="text" id="sign-up-email" name="email" required>
+            <input type="text" id="sign-up-email" name="email" required autocomplete="email">
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="username" name="username" required autocomplete="username">
             <label for="sign-up-password">Password</label>
-            <input type="password" id="sign-up-password" name="password" required>
+            <input type="password" id="sign-up-password" name="password" required autocomplete="new-password">
             <button type="submit" id="signup-submit" value="Sign up">Sign up</button>
         </form>
         <p>By signing up, you agree to the <a href="termsofservice.html">Terms of Service</a> and <a href="privacypolicy.html">Privacy Policy</a>.</p>      
@@ -29,9 +29,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-        // Your web app's Firebase configuration
+
         const firebaseConfig = {
           apiKey: "AIzaSyCc4wujPDzpH59brlpZBR46NwwtjPvZgQs",
           authDomain: "authentication-app-38a8a.firebaseapp.com",
@@ -42,24 +40,23 @@
           appId: "1:909677297907:web:b0cc8f13436f83a5dff786"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase();
         const auth = getAuth(app);
 
-        let email = document.getElementById('sign-up-email');
-        let password = document.getElementById('sign-up-password');
-        let fullname = document.getElementById('fullname');
-        let signupform = document.getElementById('sign-up-form');
+        const email = document.getElementById('sign-up-email');
+        const password = document.getElementById('sign-up-password');
+        const fullname = document.getElementById('fullname');
+        const signupform = document.getElementById('sign-up-form');
 
-        let SignUp = evt => {
+        const SignUp = evt => {
             evt.preventDefault();
 
             createUserWithEmailAndPassword(auth, email.value, password.value)
             .then((credentials)=>{
                 set(ref(db, 'UsersAuthList/' + credentials.user.uid),{
                     fullname: fullname.value
-                })
+                });
                 sessionStorage.setItem("user-creds", JSON.stringify(credentials.user));
                 window.location.href = 'index.html';
             })
@@ -67,11 +64,28 @@
                 alert(error.message);
                 console.log(error.code);
                 console.log(error.message); 
-            })
+            });
 
-        }
+        };
 
         signupform.addEventListener('submit', SignUp);
+
+        // MutationObserver to detect changes in input fields
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+                    console.log('Input value changed:', mutation.target.value);
+                    // You can perform any actions you want here
+                }
+            });
+        });
+
+        // Configure MutationObserver to observe changes in input fields
+        const config = { attributes: true, subtree: true, attributeFilter: ['value'] };
+        observer.observe(document.getElementById('fullname'), config);
+        observer.observe(document.getElementById('sign-up-email'), config);
+        observer.observe(document.getElementById('username'), config);
+        observer.observe(document.getElementById('sign-up-password'), config);
     </script>
 
 </body>

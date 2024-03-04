@@ -11,24 +11,22 @@
         <h1>Sign in</h1>
         <form id="sign-in-form">
             <label for="sign-in-email">Email</label>
-            <input type="text" id="sign-in-email" name="email" required>
+            <input type="text" id="sign-in-email" name="email" required autocomplete="email">
             <label for="sign-in-password">Password</label>
-            <input type="password" id="sign-in-password" name="password" required>
+            <input type="password" id="sign-in-password" name="password" required autocomplete="current-password">
             <button type="submit" id="sign-in-submit">Sign in</button>
         </form>
         <p>Forgot password?</p>
         <p>Don't have an account? <a href="signup.html">Sign up</a></p>
     </div>
 
-    <script src="scripts/scripts.js"></script>
+    <!-- <script src="scripts/scripts.js"></script> -->
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, set, ref, child, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-        // Your web app's Firebase configuration
+
         const firebaseConfig = {
           apiKey: "AIzaSyCc4wujPDzpH59brlpZBR46NwwtjPvZgQs",
           authDomain: "authentication-app-38a8a.firebaseapp.com",
@@ -39,48 +37,56 @@
           appId: "1:909677297907:web:b0cc8f13436f83a5dff786"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase();
         const auth = getAuth(app);
         const dbref = ref(db);
 
-        let email = document.getElementById('sign-in-email');
-        let password = document.getElementById('sign-in-password');
-        let fullname = document.getElementById('fullname');
-        let signinform = document.getElementById('sign-in-form');
+        const email = document.getElementById('sign-in-email');
+        const password = document.getElementById('sign-in-password');
+        const signinform = document.getElementById('sign-in-form');
 
-        let SignIn = evt => {
+        const SignIn = evt => {
             evt.preventDefault();
 
-            let credential;
             signInWithEmailAndPassword(auth, email.value, password.value)
             .then((credentials)=>{
                 get(child(dbref, 'UsersAuthList/' + credentials.user.uid)).then((snapshot) => {
                     if(snapshot.exists){
                         sessionStorage.setItem("user-info", JSON.stringify({
                             // fullname: snapshot.val().fullname
-                        }))
+                        }));
                         sessionStorage.setItem("user-creds", JSON.stringify(credentials.user));
-                        // window.location.href = 'index.html';
                         window.location.assign('index.html');
                     }else{
                         console.log("User not found");
                         alert("This account does not exist");
                     }
-                })
+                });
             })
             .catch((error)=>{
                 alert(error.message);
                 console.log(error.code);
                 console.log(error.message); 
-            })
-
-        }
+            });
+        };
 
         signinform.addEventListener('submit', SignIn);
+
+        // MutationObserver to detect changes in input fields
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+                    console.log('Input value changed:', mutation.target.value);
+                    // You can perform any actions you want here
+                }
+            });
+        });
+
+        // Configure MutationObserver to observe changes in input fields
+        const config = { attributes: true, subtree: true, attributeFilter: ['value'] };
+        observer.observe(document.getElementById('sign-in-email'), config);
+        observer.observe(document.getElementById('sign-in-password'), config);
     </script>
-
-
 </body>
 </html>
