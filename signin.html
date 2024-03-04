@@ -59,7 +59,7 @@
                 get(child(dbref, 'UsersAuthList/' + credentials.user.uid)).then((snapshot) => {
                     if(snapshot.exists){
                         sessionStorage.setItem("user-info", JSON.stringify({
-                            fullname: snapshot.val().fullname
+                            // fullname: snapshot.val().fullname
                         }))
                         sessionStorage.setItem("user-creds", JSON.stringify(credentials.user));
                         window.location.href = 'index.html';
